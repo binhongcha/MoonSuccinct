@@ -1,3 +1,4 @@
 import {
+  "oyjh0381/moonsuccinct/binary",
   "oyjh0381/moonsuccinct/support",
 }
