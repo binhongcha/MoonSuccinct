@@ -23,12 +23,24 @@ pub fn Dictionary::encoded_bytes(self : Dictionary) -> Int {
 }
 
 ///|
+/// Reader limits for already validated, repository-owned record bytes. Decode
+/// limits protect the trust boundary; queries must not reapply the smaller
+/// default input ceiling to an object accepted with explicit larger limits.
+fn Dictionary::record_reader(
+  self : Dictionary,
+) -> @binary.Reader raise @support.SuccinctError {
+  let size = self.encoded.length()
+  let limits = @support.DecodeLimits::new(size, self.terms, size, size)
+  @binary.Reader::new(self.encoded, limits~)
+}
+
+///|
 fn Dictionary::decode_in_block(
   self : Dictionary,
   block : Int,
   target : Int,
 ) -> Bytes raise @support.SuccinctError {
-  let reader = @binary.Reader::new(self.encoded)
+  let reader = self.record_reader()
   reader.skip(self.block_offsets[block], context="front-coded block offset")
   let mut term = reader.read_term("front-coded restart term")
   let block_start = block * self.block_size
@@ -53,7 +65,7 @@ fn Dictionary::decode_block_terms(
   self : Dictionary,
   block : Int,
 ) -> Array[Bytes] raise @support.SuccinctError {
-  let reader = @binary.Reader::new(self.encoded)
+  let reader = self.record_reader()
   reader.skip(self.block_offsets[block], context="front-coded block offset")
   let block_start = block * self.block_size
   let remaining = self.terms - block_start
