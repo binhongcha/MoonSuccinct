@@ -1,0 +1,33 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "oyjh0381/moonsuccinct/packed"
+
+import {
+  "oyjh0381/moonsuccinct/support",
+}
+
+// Values
+pub fn from_values(Array[UInt64], Int) -> PackedInts raise @support.SuccinctError
+
+pub fn from_words(Array[UInt64], Int, Int) -> PackedInts raise @support.SuccinctError
+
+// Errors
+
+// Types and methods
+pub struct PackedInts {
+  width : Int
+  length : Int
+  words : Array[UInt64]
+}
+pub fn PackedInts::at(Self, Int) -> UInt64 raise @support.SuccinctError
+pub fn PackedInts::get(Self, Int) -> UInt64?
+pub fn PackedInts::length(Self) -> Int
+pub fn PackedInts::logical_bits(Self) -> Int64
+pub fn PackedInts::packed_words(Self) -> Array[UInt64]
+pub fn PackedInts::storage_bits(Self) -> Int64
+pub fn PackedInts::to_values(Self) -> Array[UInt64]
+pub fn PackedInts::width(Self) -> Int
+pub fn PackedInts::word_count(Self) -> Int
+
+// Type aliases
+
+// Traits

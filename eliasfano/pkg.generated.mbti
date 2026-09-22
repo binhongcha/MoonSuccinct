@@ -1,0 +1,93 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "oyjh0381/moonsuccinct/eliasfano"
+
+import {
+  "moonbitlang/core/debug",
+  "oyjh0381/moonsuccinct/bitvector",
+  "oyjh0381/moonsuccinct/packed",
+  "oyjh0381/moonsuccinct/support",
+}
+
+// Values
+pub fn decode(Bytes, limits? : @support.DecodeLimits) -> EliasFano raise @support.SuccinctError
+
+pub fn difference_distinct(EliasFano, EliasFano) -> EliasFano raise @support.SuccinctError
+
+pub fn encode(EliasFano) -> Bytes
+
+pub fn from_values(Array[UInt64]) -> EliasFano raise @support.SuccinctError
+
+pub fn intersect_distinct(EliasFano, EliasFano) -> EliasFano raise @support.SuccinctError
+
+pub fn union_distinct(EliasFano, EliasFano) -> EliasFano raise @support.SuccinctError
+
+// Errors
+
+// Types and methods
+pub struct EliasFano {
+  length : Int
+  maximum : UInt64?
+  low_width : Int
+  lows : @packed.PackedInts
+  highs : @bitvector.BitVector
+}
+pub fn EliasFano::at(Self, Int) -> UInt64 raise @support.SuccinctError
+pub fn EliasFano::contains(Self, UInt64) -> Bool
+pub fn EliasFano::count(Self, UInt64) -> Int
+pub fn EliasFano::count_range(Self, UInt64, UInt64) -> Int raise @support.SuccinctError
+pub fn EliasFano::equal_range(Self, UInt64) -> IndexRange
+pub fn EliasFano::get(Self, Int) -> UInt64?
+pub fn EliasFano::high_bit_length(Self) -> Int
+pub fn EliasFano::high_words(Self) -> Array[UInt64]
+pub fn EliasFano::is_empty(Self) -> Bool
+pub fn EliasFano::length(Self) -> Int
+pub fn EliasFano::low_width(Self) -> Int
+pub fn EliasFano::low_words(Self) -> Array[UInt64]
+pub fn EliasFano::lower_bound(Self, UInt64) -> Int
+pub fn EliasFano::maximum(Self) -> UInt64?
+pub fn EliasFano::minimum(Self) -> UInt64?
+pub fn EliasFano::predecessor(Self, UInt64) -> UInt64?
+pub fn EliasFano::range(Self, UInt64, UInt64) -> IndexRange raise @support.SuccinctError
+pub fn EliasFano::slice(Self, Int, Int) -> Self raise @support.SuccinctError
+pub fn EliasFano::space_report(Self) -> @support.SpaceReport raise @support.SuccinctError
+pub fn EliasFano::statistics(Self) -> EliasFanoStatistics
+pub fn EliasFano::strict_predecessor(Self, UInt64) -> UInt64?
+pub fn EliasFano::strict_successor(Self, UInt64) -> UInt64?
+pub fn EliasFano::successor(Self, UInt64) -> UInt64?
+pub fn EliasFano::to_values(Self) -> Array[UInt64]
+pub fn EliasFano::upper_bound(Self, UInt64) -> Int
+pub fn EliasFano::values_in_range(Self, UInt64, UInt64, Int) -> Array[UInt64] raise @support.SuccinctError
+
+pub struct EliasFanoBuilder {
+  values : Array[UInt64]
+  mut last : UInt64?
+}
+pub fn EliasFanoBuilder::append_all(Self, Array[UInt64]) -> Unit raise @support.SuccinctError
+pub fn EliasFanoBuilder::clear(Self) -> Unit
+pub fn EliasFanoBuilder::finish(Self) -> EliasFano raise @support.SuccinctError
+pub fn EliasFanoBuilder::is_empty(Self) -> Bool
+pub fn EliasFanoBuilder::last(Self) -> UInt64?
+pub fn EliasFanoBuilder::length(Self) -> Int
+pub fn EliasFanoBuilder::new() -> Self
+pub fn EliasFanoBuilder::push(Self, UInt64) -> Unit raise @support.SuccinctError
+pub fn EliasFanoBuilder::to_values(Self) -> Array[UInt64]
+
+pub(all) struct EliasFanoStatistics {
+  values : Int
+  low_width : Int
+  low_logical_bits : Int64
+  low_storage_bits : Int64
+  high_logical_bits : Int
+  high_one_bits : Int
+  high_zero_bits : Int
+  high_rank_directory_bits : Int64
+} derive(Eq, @debug.Debug)
+
+pub(all) struct IndexRange {
+  start : Int
+  end : Int
+} derive(Eq, @debug.Debug)
+
+// Type aliases
+
+// Traits

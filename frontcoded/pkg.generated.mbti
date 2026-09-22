@@ -1,0 +1,55 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "oyjh0381/moonsuccinct/frontcoded"
+
+import {
+  "moonbitlang/core/debug",
+  "oyjh0381/moonsuccinct/support",
+}
+
+// Values
+pub fn decode(Bytes, limits? : @support.DecodeLimits) -> Dictionary raise @support.SuccinctError
+
+pub fn encode(Dictionary) -> Bytes
+
+pub fn from_terms(Array[Bytes], block_size? : Int) -> Dictionary raise @support.SuccinctError
+
+// Errors
+
+// Types and methods
+pub struct Dictionary {
+  terms : Int
+  block_size : Int
+  encoded : Bytes
+  block_offsets : Array[Int]
+}
+pub fn Dictionary::at(Self, Int) -> Bytes raise @support.SuccinctError
+pub fn Dictionary::block_count(Self) -> Int
+pub fn Dictionary::block_size(Self) -> Int
+pub fn Dictionary::contains(Self, Bytes) -> Bool raise @support.SuccinctError
+pub fn Dictionary::encoded_bytes(Self) -> Int
+pub fn Dictionary::get(Self, Int) -> Bytes? raise @support.SuccinctError
+pub fn Dictionary::length(Self) -> Int
+pub fn Dictionary::lower_bound(Self, Bytes) -> Int raise @support.SuccinctError
+pub fn Dictionary::prefix_range(Self, Bytes) -> TermRange raise @support.SuccinctError
+pub fn Dictionary::space_report(Self) -> @support.SpaceReport raise @support.SuccinctError
+pub fn Dictionary::statistics(Self) -> DictionaryStatistics
+pub fn Dictionary::term_number(Self, Bytes) -> Int? raise @support.SuccinctError
+pub fn Dictionary::terms_with_prefix(Self, Bytes, Int) -> Array[Bytes] raise @support.SuccinctError
+pub fn Dictionary::to_terms(Self) -> Array[Bytes] raise @support.SuccinctError
+
+pub(all) struct DictionaryStatistics {
+  terms : Int
+  blocks : Int
+  block_size : Int
+  encoded_record_bytes : Int
+  restart_offset_bytes : Int
+} derive(Eq, @debug.Debug)
+
+pub(all) struct TermRange {
+  start : Int
+  end : Int
+} derive(Eq, @debug.Debug)
+
+// Type aliases
+
+// Traits

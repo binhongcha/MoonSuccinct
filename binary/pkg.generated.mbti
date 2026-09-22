@@ -1,0 +1,48 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "oyjh0381/moonsuccinct/binary"
+
+import {
+  "oyjh0381/moonsuccinct/support",
+}
+
+// Values
+pub fn varint_length(UInt64) -> Int
+
+// Errors
+
+// Types and methods
+pub struct Reader {
+  data : Bytes
+  mut cursor : Int
+  limits : @support.DecodeLimits
+}
+pub fn Reader::finish(Self, String) -> Unit raise @support.SuccinctError
+pub fn Reader::new(Bytes, limits? : @support.DecodeLimits) -> Self raise @support.SuccinctError
+pub fn Reader::position(Self) -> Int
+pub fn Reader::read_byte(Self, context? : String) -> Byte raise @support.SuccinctError
+pub fn Reader::read_bytes(Self, Int, context? : String) -> Bytes raise @support.SuccinctError
+pub fn Reader::read_count(Self, String) -> Int raise @support.SuccinctError
+pub fn Reader::read_magic(Self, Bytes, String) -> Unit raise @support.SuccinctError
+pub fn Reader::read_term(Self, String) -> Bytes raise @support.SuccinctError
+pub fn Reader::read_u32(Self, context? : String) -> UInt raise @support.SuccinctError
+pub fn Reader::read_u64(Self, context? : String) -> UInt64 raise @support.SuccinctError
+pub fn Reader::read_varint(Self, context? : String) -> UInt64 raise @support.SuccinctError
+pub fn Reader::remaining(Self) -> Int
+pub fn Reader::skip(Self, Int, context? : String) -> Unit raise @support.SuccinctError
+
+pub struct Writer {
+  output : Array[Byte]
+}
+pub fn Writer::finish(Self) -> Bytes
+pub fn Writer::length(Self) -> Int
+pub fn Writer::new() -> Self
+pub fn Writer::write_byte(Self, Byte) -> Unit
+pub fn Writer::write_bytes(Self, Bytes) -> Unit
+pub fn Writer::write_length_prefixed(Self, Bytes) -> Unit
+pub fn Writer::write_u32(Self, UInt) -> Unit
+pub fn Writer::write_u64(Self, UInt64) -> Unit
+pub fn Writer::write_varint(Self, UInt64) -> Unit
+
+// Type aliases
+
+// Traits

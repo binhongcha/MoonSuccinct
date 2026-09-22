@@ -1,0 +1,15 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "oyjh0381/moonsuccinct/conformance"
+
+// Values
+pub fn smoke_check() -> Bool raise
+
+pub let suite_name : String
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits

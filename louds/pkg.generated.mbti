@@ -1,0 +1,76 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "oyjh0381/moonsuccinct/louds"
+
+import {
+  "moonbitlang/core/debug",
+  "oyjh0381/moonsuccinct/bitvector",
+  "oyjh0381/moonsuccinct/support",
+}
+
+// Values
+pub fn decode_trie(Bytes, limits? : @support.DecodeLimits) -> Trie raise @support.SuccinctError
+
+pub fn encode_trie(Trie) -> Bytes
+
+pub fn from_bitvector(@bitvector.BitVector) -> Topology raise @support.SuccinctError
+
+pub fn from_degrees(Array[Int]) -> Topology raise @support.SuccinctError
+
+pub fn trie_from_terms(Array[Bytes]) -> Trie raise @support.SuccinctError
+
+// Errors
+
+// Types and methods
+pub(all) struct TermRange {
+  start : Int
+  end : Int
+} derive(Eq, @debug.Debug)
+
+pub struct Topology {
+  bits : @bitvector.BitVector
+  nodes : Int
+}
+pub fn Topology::bit_length(Self) -> Int
+pub fn Topology::child(Self, Int, Int) -> Int? raise @support.SuccinctError
+pub fn Topology::children(Self, Int) -> Array[Int] raise @support.SuccinctError
+pub fn Topology::contains_node(Self, Int) -> Bool
+pub fn Topology::degree(Self, Int) -> Int raise @support.SuccinctError
+pub fn Topology::edge_count(Self) -> Int
+pub fn Topology::first_child(Self, Int) -> Int? raise @support.SuccinctError
+pub fn Topology::is_leaf(Self, Int) -> Bool raise @support.SuccinctError
+pub fn Topology::node_count(Self) -> Int
+pub fn Topology::packed_words(Self) -> Array[UInt64]
+pub fn Topology::parent(Self, Int) -> Int? raise @support.SuccinctError
+pub fn Topology::to_degrees(Self) -> Array[Int]
+
+pub struct Trie {
+  topology : Topology
+  edge_labels : Bytes
+  terminals : @bitvector.BitVector
+  subtree_terms : Array[Int]
+  terms : Int
+}
+pub fn Trie::contains(Self, Bytes) -> Bool
+pub fn Trie::find_node(Self, Bytes) -> Int?
+pub fn Trie::is_terminal(Self, Int) -> Bool raise @support.SuccinctError
+pub fn Trie::node_count(Self) -> Int
+pub fn Trie::prefix_range(Self, Bytes) -> TermRange
+pub fn Trie::space_report(Self) -> @support.SpaceReport raise @support.SuccinctError
+pub fn Trie::statistics(Self) -> TrieStatistics
+pub fn Trie::term_count(Self) -> Int
+pub fn Trie::term_number(Self, Bytes) -> Int?
+pub fn Trie::terms_with_prefix(Self, Bytes, Int) -> Array[Bytes] raise @support.SuccinctError
+
+pub(all) struct TrieStatistics {
+  nodes : Int
+  edges : Int
+  terms : Int
+  topology_bits : Int
+  label_bytes : Int
+  terminal_bits : Int
+  subtree_counter_bytes : Int
+} derive(Eq, @debug.Debug)
+
+// Type aliases
+
+// Traits

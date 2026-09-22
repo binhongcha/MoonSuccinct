@@ -1,0 +1,63 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "oyjh0381/moonsuccinct/support"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn common_prefix_length(Bytes, Bytes) -> Int
+
+pub fn compare_bytes(Bytes, Bytes) -> Int
+
+pub fn copy_bytes(Bytes) -> Bytes
+
+pub fn join_prefix_suffix(Bytes, Int, Bytes) -> Bytes raise SuccinctError
+
+pub fn starts_with_bytes(Bytes, Bytes) -> Bool
+
+// Errors
+pub(all) suberror SuccinctError {
+  InvalidArgument(context~ : String, detail~ : String)
+  InvalidSequence(index~ : Int, detail~ : String)
+  OutOfRange(context~ : String, index~ : Int, length~ : Int)
+  NumericOverflow(context~ : String)
+  TruncatedInput(offset~ : Int, context~ : String)
+  InvalidEncoding(offset~ : Int, context~ : String, detail~ : String)
+  ResourceLimit(limit~ : String, actual~ : Int64, maximum~ : Int64)
+  UnsupportedVersion(format~ : String, version~ : Int)
+} derive(Eq, @debug.Debug)
+pub fn SuccinctError::code(Self) -> String
+pub fn SuccinctError::is_limit_error(Self) -> Bool
+pub fn SuccinctError::is_malformed_input(Self) -> Bool
+pub fn SuccinctError::message(Self) -> String
+
+// Types and methods
+pub(all) struct DecodeLimits {
+  max_input_bytes : Int
+  max_items : Int
+  max_term_bytes : Int
+  max_total_term_bytes : Int
+} derive(Eq, @debug.Debug)
+pub fn DecodeLimits::check_input(Self, Int) -> Unit raise SuccinctError
+pub fn DecodeLimits::check_items(Self, Int) -> Unit raise SuccinctError
+pub fn DecodeLimits::check_term(Self, Int) -> Unit raise SuccinctError
+pub fn DecodeLimits::check_total_terms(Self, Int) -> Unit raise SuccinctError
+pub fn DecodeLimits::new(Int, Int, Int, Int) -> Self raise SuccinctError
+pub fn DecodeLimits::sensible() -> Self
+
+pub(all) struct SpaceReport {
+  structure : String
+  logical_items : Int
+  payload_bits : Int64
+  auxiliary_bits : Int64
+  serialized_bytes : Int
+} derive(Eq, @debug.Debug)
+pub fn SpaceReport::accounted_bits(Self) -> Int64
+pub fn SpaceReport::accounted_bytes(Self) -> Int64
+pub fn SpaceReport::bits_per_item(Self) -> Double
+pub fn SpaceReport::new(String, Int, Int64, Int64, Int) -> Self raise SuccinctError
+
+// Type aliases
+
+// Traits
