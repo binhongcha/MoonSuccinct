@@ -62,12 +62,13 @@ pub fn decode(
   }
   let low_width = reader.read_byte(context="Elias-Fano low width").to_int()
   let low_word_count = reader.read_count("Elias-Fano low word count")
-  let expected_low = if length == 0 || low_width == 0 {
-    0
+  let low_bits = length.to_uint64() * low_width.to_uint64()
+  let expected_low = if low_bits == 0UL {
+    0UL
   } else {
-    (length * low_width + 63) / 64
+    (low_bits + 63UL) / 64UL
   }
-  if low_width > 63 || low_word_count != expected_low {
+  if low_width > 63 || low_word_count.to_uint64() != expected_low {
     raise @support.SuccinctError::InvalidEncoding(
       offset=reader.position(),
       context="Elias-Fano",
@@ -80,7 +81,11 @@ pub fn decode(
   }
   let high_length = reader.read_count("Elias-Fano high bit length")
   let high_word_count = reader.read_count("Elias-Fano high word count")
-  let expected_high = if high_length == 0 { 0 } else { (high_length + 63) / 64 }
+  let expected_high = if high_length == 0 {
+    0
+  } else {
+    (high_length - 1) / 64 + 1
+  }
   if high_word_count != expected_high {
     raise @support.SuccinctError::InvalidEncoding(
       offset=reader.position(),

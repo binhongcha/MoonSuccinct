@@ -50,6 +50,17 @@ fn valid_bits_in_word(length : Int, word_index : Int) -> Int {
 }
 
 ///|
+/// Number of storage words for a non-negative logical bit length. Subtracting
+/// before dividing avoids overflowing `Int` near its upper bound.
+fn packed_word_count(length : Int) -> Int {
+  if length <= 0 {
+    0
+  } else {
+    (length - 1) / word_bits + 1
+  }
+}
+
+///|
 fn low_mask(bits : Int) -> UInt64 {
   if bits <= 0 {
     0UL

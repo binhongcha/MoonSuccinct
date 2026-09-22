@@ -41,7 +41,7 @@ pub fn from_values(
     if position > 2147483646UL {
       raise @support.SuccinctError::ResourceLimit(
         limit="elias_fano_high_bits",
-        actual=(position + 1UL).reinterpret_as_int64(),
+        actual=2147483648L,
         maximum=2147483647L,
       )
     }

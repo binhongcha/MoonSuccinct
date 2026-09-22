@@ -19,6 +19,7 @@ pub fn from_degrees(
   let builder = @bitvector.BitBuilder::new()
   let mut open_slots = 1
   let mut edges = 0
+  let maximum_edges = degrees.length() - 1
   for index = 0; index < degrees.length(); index = index + 1 {
     let degree = degrees[index]
     if degree < 0 {
@@ -31,6 +32,12 @@ pub fn from_degrees(
       raise @support.SuccinctError::InvalidSequence(
         index~,
         detail="node is unreachable from the root",
+      )
+    }
+    if degree > maximum_edges - edges {
+      raise @support.SuccinctError::InvalidSequence(
+        index~,
+        detail="degree sum exceeds the edge count of one rooted tree",
       )
     }
     open_slots = open_slots - 1 + degree

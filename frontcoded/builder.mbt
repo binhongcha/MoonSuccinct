@@ -58,7 +58,7 @@ fn from_parts(
   let expected_blocks = if terms == 0 {
     0
   } else {
-    (terms + block_size - 1) / block_size
+    (terms - 1) / block_size + 1
   }
   if block_offsets.length() != expected_blocks {
     raise @support.SuccinctError::InvalidArgument(
@@ -101,7 +101,8 @@ fn from_parts(
       context="front-coded block offset",
     )
     let block_start = block * block_size
-    let block_end = if block_start + block_size < terms {
+    let remaining = terms - block_start
+    let block_end = if block_size < remaining {
       block_start + block_size
     } else {
       terms

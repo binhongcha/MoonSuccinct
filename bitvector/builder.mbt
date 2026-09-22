@@ -101,7 +101,7 @@ pub fn from_words(
       detail="must be non-negative",
     )
   }
-  let expected_words = if length == 0 { 0 } else { (length + 63) / 64 }
+  let expected_words = packed_word_count(length)
   if input_words.length() != expected_words {
     raise @support.SuccinctError::InvalidArgument(
       context="packed words",

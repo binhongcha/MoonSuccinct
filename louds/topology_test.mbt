@@ -50,3 +50,11 @@ test "LOUDS rejects impossible degree sequences and node numbers" {
     _ => fail("expected node range error")
   }
 }
+
+///|
+test "LOUDS rejects an impossible huge degree before allocating its bits" {
+  ignore(from_degrees([2147483647])) catch {
+    @support.SuccinctError::InvalidSequence(index~, ..) => assert_eq(index, 0)
+    _ => fail("expected impossible edge-count rejection")
+  }
+}

@@ -36,7 +36,7 @@ pub fn decode(
   }
   let length = reader.read_count("bit length")
   let word_count = reader.read_count("bit word count")
-  let expected = if length == 0 { 0 } else { (length + 63) / 64 }
+  let expected = packed_word_count(length)
   if word_count != expected {
     raise @support.SuccinctError::InvalidEncoding(
       offset=reader.position(),
