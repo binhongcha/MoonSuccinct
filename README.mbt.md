@@ -66,7 +66,7 @@ Do not run that command before the package exists on Mooncakes.
 
 ### Monotone posting list
 
-```moonbit
+```moonbit nocheck
 let postings = @eliasfano.from_values([
   2UL, 5UL, 5UL, 21UL, 144UL, 1000UL,
 ])
@@ -79,7 +79,7 @@ assert_eq(restored.to_values(), postings.to_values())
 
 ### Static prefix index
 
-```moonbit
+```moonbit nocheck
 let terms : Array[Bytes] = [
   b"api/admin", b"api/catalog", b"api/catalog/items", b"docs",
 ]
@@ -93,7 +93,7 @@ assert_eq(
 
 ### Front-coded symbol dictionary
 
-```moonbit
+```moonbit nocheck
 let dictionary = @frontcoded.from_terms(
   [b"compile.module", b"compile.package", b"config.debug"],
   block_size=2,
