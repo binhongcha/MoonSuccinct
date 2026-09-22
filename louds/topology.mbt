@@ -197,21 +197,26 @@ pub fn Topology::child(
 }
 
 ///|
+fn Topology::children_valid(self : Topology, node : Int) -> Array[Int] {
+  let count = self.degree_valid(node)
+  let result : Array[Int] = []
+  if count > 0 {
+    let first = self.segment_start(node) - node + 1
+    for offset = 0; offset < count; offset = offset + 1 {
+      result.push(first + offset)
+    }
+  }
+  result
+}
+
+///|
 /// Ordered child node numbers.
 pub fn Topology::children(
   self : Topology,
   node : Int,
 ) -> Array[Int] raise @support.SuccinctError {
-  let count = self.degree(node)
-  let result : Array[Int] = []
-  match self.first_child(node) {
-    None => ()
-    Some(first) =>
-      for offset = 0; offset < count; offset = offset + 1 {
-        result.push(first + offset)
-      }
-  }
-  result
+  self.check_node(node)
+  self.children_valid(node)
 }
 
 ///|
