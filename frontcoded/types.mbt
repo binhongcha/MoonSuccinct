@@ -25,15 +25,7 @@ fn copy_terms(input : Array[Bytes]) -> Array[Bytes] {
 
 ///|
 fn sort_terms(terms : Array[Bytes]) -> Unit {
-  for index = 1; index < terms.length(); index = index + 1 {
-    let value = terms[index]
-    let mut cursor = index
-    while cursor > 0 && @support.compare_bytes(terms[cursor - 1], value) > 0 {
-      terms[cursor] = terms[cursor - 1]
-      cursor -= 1
-    }
-    terms[cursor] = value
-  }
+  terms.sort_by((left, right) => @support.compare_bytes(left, right))
 }
 
 ///|

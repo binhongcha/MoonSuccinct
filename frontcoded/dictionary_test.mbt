@@ -75,3 +75,30 @@ test "front-coded dictionary validates configuration and range" {
     _ => fail("expected enumeration limit error")
   }
 }
+
+///|
+test "dictionary canonicalizes a large reverse-ordered duplicate workload" {
+  let terms : Array[Bytes] = []
+  for index = 4095; index >= 0; index = index - 1 {
+    let term = Bytes::from_array([
+      ((index >> 8) & 0xff).to_byte(),
+      (index & 0xff).to_byte(),
+    ])
+    terms.push(term)
+    if index % 7 == 0 {
+      terms.push(term)
+    }
+  }
+  let dictionary = from_terms(terms, block_size=16)
+  assert_eq(dictionary.length(), 4096)
+  assert_eq(dictionary.get(0), Some(b"\x00\x00"))
+  assert_eq(dictionary.get(4095), Some(b"\x0f\xff"))
+  for index = 0; index < 4096; index = index + 257 {
+    let term = Bytes::from_array([
+      ((index >> 8) & 0xff).to_byte(),
+      (index & 0xff).to_byte(),
+    ])
+    assert_eq(dictionary.term_number(term), Some(index))
+  }
+  assert_eq(decode(encode(dictionary)).to_terms(), dictionary.to_terms())
+}
