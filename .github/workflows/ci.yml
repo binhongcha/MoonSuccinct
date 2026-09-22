@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  portable:
+    name: Portable (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v6
+      - uses: hustcer/setup-moonbit@v1.22
+      - name: Toolchain
+        run: moon version --all
+      - name: Resolve dependencies
+        run: moon update
+      - name: Formatting
+        run: moon fmt --check
+      - name: All-target typecheck
+        run: moon check --target all --deny-warn
+      - name: All-target tests
+        run: moon test --target all --deny-warn
+      - name: All-target build
+        run: moon build --target all --deny-warn
+      - name: Runnable examples
+        run: |
+          moon run examples/postings --target wasm-gc
+          moon run examples/taxonomy --target wasm-gc
+          moon run examples/dictionary --target wasm-gc
+      - name: Effective MoonBit source floor
+        run: python tools/count_moonbit.py --minimum 4001
+
+  public-api:
+    name: Public API and documentation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: hustcer/setup-moonbit@v1.22
+      - name: Resolve dependencies
+        run: moon update
+      - name: Generate documentation
+        run: moon doc
+      - name: Verify committed interfaces
+        run: |
+          moon info --target all
+          git diff --exit-code
