@@ -85,19 +85,56 @@ fn from_parts(
     block_offsets: copied_offsets,
   }
   let mut previous : Bytes? = None
-  for index = 0; index < terms; index = index + 1 {
-    let term = candidate.at(index)
-    match previous {
-      Some(value) =>
-        if @support.compare_bytes(value, term) >= 0 {
-          raise @support.SuccinctError::InvalidSequence(
-            index~,
-            detail="decoded terms must be strictly increasing",
+  for block = 0; block < expected_blocks; block = block + 1 {
+    let reader = @binary.Reader::new(candidate.encoded)
+    reader.skip(
+      candidate.block_offsets[block],
+      context="front-coded block offset",
+    )
+    let block_start = block * block_size
+    let block_end = if block_start + block_size < terms {
+      block_start + block_size
+    } else {
+      terms
+    }
+    let mut term = reader.read_term("front-coded restart term")
+    for index = block_start; index < block_end; index = index + 1 {
+      if index > block_start {
+        let prefix64 = reader.read_varint(context="front-coded prefix length")
+        if prefix64 > term.length().to_uint64() {
+          raise @support.SuccinctError::InvalidEncoding(
+            offset=reader.position(),
+            context="front-coded term",
+            detail="prefix exceeds previous term",
           )
         }
-      None => ()
+        let suffix = reader.read_term("front-coded suffix")
+        term = @support.join_prefix_suffix(term, prefix64.to_int(), suffix)
+      }
+      match previous {
+        Some(value) =>
+          if @support.compare_bytes(value, term) >= 0 {
+            raise @support.SuccinctError::InvalidSequence(
+              index~,
+              detail="decoded terms must be strictly increasing",
+            )
+          }
+        None => ()
+      }
+      previous = Some(term)
     }
-    previous = Some(term)
+    let expected_end = if block + 1 < expected_blocks {
+      candidate.block_offsets[block + 1]
+    } else {
+      candidate.encoded.length()
+    }
+    if reader.position() != expected_end {
+      raise @support.SuccinctError::InvalidEncoding(
+        offset=reader.position(),
+        context="front-coded block",
+        detail="record bytes do not end at the next restart offset",
+      )
+    }
   }
   candidate
 }
