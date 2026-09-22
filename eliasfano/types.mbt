@@ -10,6 +10,18 @@ pub struct EliasFano {
 }
 
 ///|
+/// Append-only validator for incrementally produced monotone sequences.
+///
+/// The builder deliberately retains logical values until `finish`: the final
+/// Elias–Fano split depends on both the maximum and the element count. This
+/// still lets parsers and merge pipelines reject a descending value at the
+/// point where it arrives, without exposing partially encoded state.
+pub struct EliasFanoBuilder {
+  values : Array[UInt64]
+  mut last : UInt64?
+}
+
+///|
 fn floor_log2(value : UInt64) -> Int {
   let mut remaining = value
   let mut result = -1
