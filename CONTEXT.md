@@ -40,3 +40,24 @@ _Avoid_: Record ID, key ID
 **Space report**:
 A component-by-component accounting of encoded data and auxiliary index bits.
 _Avoid_: Compression ratio, unless a baseline is stated
+
+**Static query object**:
+An immutable index produced after a finite build phase and used for repeated
+queries without in-place logical updates.
+_Avoid_: Read-only database, frozen collection
+
+**Restart block**:
+A consecutive group of sorted terms whose first term is independently
+recoverable and bounds reconstruction work for later terms in the group.
+_Avoid_: Page, chunk
+
+**Canonical encoding**:
+The single accepted byte representation for one logical object at a specified
+format version; alternate padding, overlong integers, gaps, and trailing data
+are invalid even if a permissive reader could recover the same values.
+_Avoid_: Valid serialization
+
+**Decode budget**:
+Caller-selected ceilings on untrusted encoded input, item counts, individual
+term size, and cumulative decoded term bytes.
+_Avoid_: Memory limit, because CPU and traversal exposure are also bounded
