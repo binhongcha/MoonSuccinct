@@ -13,6 +13,9 @@ versioning after its first public release.
 - Add versioned bounded binary formats and portable space reports.
 - Add three runnable scenarios and cross-structure conformance tests.
 - Add three-platform, four-target continuous integration.
+- Enforce cumulative decoded-term budgets and overflow-safe size arithmetic.
+- Use O(n log n) dictionary sorting and direct restart-block lower-bound search.
+- Add toolchain coverage analysis and explicit public boundary-contract tests.
 
 Publication is intentionally deferred until the repository owner authorizes
 GitHub push and Mooncakes release.

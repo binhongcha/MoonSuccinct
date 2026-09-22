@@ -72,6 +72,19 @@ moon test --target all --deny-warn
 moon build --target all --deny-warn
 ```
 
+Coverage is inspected with:
+
+```text
+moon coverage analyze
+```
+
+The 2026-09-22 implementation-complete baseline reports 52 uncovered statement
+lines in 17 files, down from 104 before the boundary-contract audit. Executable
+entry points are run separately because the coverage test runner does not invoke
+their `main` functions. Remaining uncovered lines are reviewed rather than
+converted into a vanity percentage; they consist primarily of defensive
+internal fallbacks and malformed-format combinations.
+
 Before release, CI must pass these commands on Ubuntu, macOS, and Windows. A
 separate release check will re-run the ecosystem collision search and inspect
 the generated public interfaces for accidental API growth.
