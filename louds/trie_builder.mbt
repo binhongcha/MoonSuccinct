@@ -94,3 +94,51 @@ pub fn trie_from_terms(
     terms: term_count,
   }
 }
+
+///|
+/// Reconstruct validated trie parts for the binary decoder.
+fn trie_from_parts(
+  topology : Topology,
+  edge_labels : Bytes,
+  terminals : @bitvector.BitVector,
+) -> Trie raise @support.SuccinctError {
+  if edge_labels.length() != topology.edge_count() {
+    raise @support.SuccinctError::InvalidArgument(
+      context="trie edge labels",
+      detail="label count must equal topology edge count",
+    )
+  }
+  if terminals.length() != topology.node_count() {
+    raise @support.SuccinctError::InvalidArgument(
+      context="trie terminals",
+      detail="terminal bit count must equal topology node count",
+    )
+  }
+  for node = 0; node < topology.node_count(); node = node + 1 {
+    let children = topology.children_valid(node)
+    for index = 1; index < children.length(); index = index + 1 {
+      if edge_labels[children[index - 1] - 1].to_int() >=
+        edge_labels[children[index] - 1].to_int() {
+        raise @support.SuccinctError::InvalidSequence(
+          index=children[index],
+          detail="sibling edge labels must be strictly increasing",
+        )
+      }
+    }
+  }
+  let subtree_terms = Array::make(topology.node_count(), 0)
+  for node = topology.node_count() - 1; node >= 0; node = node - 1 {
+    let mut count = if terminals.get(node).unwrap() { 1 } else { 0 }
+    for child in topology.children_valid(node) {
+      count += subtree_terms[child]
+    }
+    subtree_terms[node] = count
+  }
+  {
+    topology,
+    edge_labels: @support.copy_bytes(edge_labels),
+    terminals,
+    subtree_terms,
+    terms: terminals.one_count(),
+  }
+}
