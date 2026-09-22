@@ -68,5 +68,5 @@ pub fn decode(
     offsets.push(offset64.to_int())
   }
   reader.finish("front-coded dictionary")
-  from_parts(terms, block_size64.to_int(), encoded, offsets)
+  from_parts(terms, block_size64.to_int(), encoded, offsets, limits~)
 }

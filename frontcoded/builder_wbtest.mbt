@@ -19,3 +19,11 @@ test "dictionary parts accept exactly consumed canonical blocks" {
   let dictionary = from_parts(2, 1, b"\x01a\x01b", [0, 2])
   assert_eq(dictionary.to_terms(), [b"a", b"b"])
 }
+
+///|
+test "empty dictionary parts reject hidden record bytes" {
+  ignore(from_parts(0, 8, b"\x00", [])) catch {
+    @support.SuccinctError::InvalidEncoding(..) => ()
+    _ => fail("expected empty record-byte rejection")
+  }
+}

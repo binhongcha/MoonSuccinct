@@ -47,6 +47,7 @@ fn from_parts(
   block_size : Int,
   encoded : Bytes,
   block_offsets : Array[Int],
+  limits? : @support.DecodeLimits = @support.DecodeLimits::sensible(),
 ) -> Dictionary raise @support.SuccinctError {
   if terms < 0 || block_size <= 0 {
     raise @support.SuccinctError::InvalidArgument(
@@ -63,6 +64,13 @@ fn from_parts(
     raise @support.SuccinctError::InvalidArgument(
       context="front-coded block offsets",
       detail="block count does not match term count",
+    )
+  }
+  if expected_blocks == 0 && encoded.length() != 0 {
+    raise @support.SuccinctError::InvalidEncoding(
+      offset=0,
+      context="front-coded dictionary",
+      detail="empty dictionary must not contain record bytes",
     )
   }
   let copied_offsets : Array[Int] = []
@@ -85,8 +93,9 @@ fn from_parts(
     block_offsets: copied_offsets,
   }
   let mut previous : Bytes? = None
+  let mut decoded_term_bytes = 0
   for block = 0; block < expected_blocks; block = block + 1 {
-    let reader = @binary.Reader::new(candidate.encoded)
+    let reader = @binary.Reader::new(candidate.encoded, limits~)
     reader.skip(
       candidate.block_offsets[block],
       context="front-coded block offset",
@@ -111,6 +120,14 @@ fn from_parts(
         let suffix = reader.read_term("front-coded suffix")
         term = @support.join_prefix_suffix(term, prefix64.to_int(), suffix)
       }
+      limits.check_term(term.length())
+      if term.length() > 2147483647 - decoded_term_bytes {
+        raise @support.SuccinctError::NumericOverflow(
+          context="front-coded cumulative term bytes",
+        )
+      }
+      decoded_term_bytes += term.length()
+      limits.check_total_terms(decoded_term_bytes)
       match previous {
         Some(value) =>
           if @support.compare_bytes(value, term) >= 0 {

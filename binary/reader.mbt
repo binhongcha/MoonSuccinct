@@ -3,6 +3,7 @@
 pub struct Reader {
   data : Bytes
   mut cursor : Int
+  mut term_bytes : Int
   limits : @support.DecodeLimits
 }
 
@@ -13,7 +14,7 @@ pub fn Reader::new(
   limits? : @support.DecodeLimits = @support.DecodeLimits::sensible(),
 ) -> Reader raise @support.SuccinctError {
   limits.check_input(data.length())
-  { data, cursor: 0, limits, }
+  { data, cursor: 0, term_bytes: 0, limits, }
 }
 
 ///|
@@ -197,7 +198,16 @@ pub fn Reader::read_term(
   }
   let count = value.to_int()
   self.limits.check_term(count)
-  self.read_bytes(count, context~)
+  if count > 2147483647 - self.term_bytes {
+    raise @support.SuccinctError::NumericOverflow(
+      context="cumulative term bytes",
+    )
+  }
+  let next_total = self.term_bytes + count
+  self.limits.check_total_terms(next_total)
+  let result = self.read_bytes(count, context~)
+  self.term_bytes = next_total
+  result
 }
 
 ///|

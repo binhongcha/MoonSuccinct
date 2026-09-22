@@ -48,3 +48,19 @@ test "reader rejects truncation overlong values and trailing bytes" {
     _ => fail("expected trailing byte rejection")
   }
 }
+
+///|
+test "reader enforces cumulative term bytes without consuming rejected data" {
+  let limits = @support.DecodeLimits::new(100, 100, 10, 5)
+  let reader = Reader::new(b"\x03abc\x03def", limits~)
+  assert_eq(reader.read_term("first"), b"abc")
+  ignore(reader.read_term("second")) catch {
+    @support.SuccinctError::ResourceLimit(limit~, actual~, maximum~) => {
+      assert_eq(limit, "total_term_bytes")
+      assert_eq(actual, 6L)
+      assert_eq(maximum, 5L)
+    }
+    _ => fail("expected cumulative term-byte limit")
+  }
+  assert_eq(reader.position(), 5)
+}
