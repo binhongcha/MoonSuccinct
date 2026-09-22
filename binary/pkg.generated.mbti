@@ -14,6 +14,7 @@ pub fn varint_length(UInt64) -> Int
 pub struct Reader {
   data : Bytes
   mut cursor : Int
+  mut term_bytes : Int
   limits : @support.DecodeLimits
 }
 pub fn Reader::finish(Self, String) -> Unit raise @support.SuccinctError
