@@ -1,4 +1,5 @@
 import {
+  "oyjh0381/moonsuccinct/binary",
   "oyjh0381/moonsuccinct/bitvector",
   "oyjh0381/moonsuccinct/packed",
   "oyjh0381/moonsuccinct/support",

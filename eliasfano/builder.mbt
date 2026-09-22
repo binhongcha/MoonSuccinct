@@ -61,7 +61,7 @@ pub fn from_values(
 
 ///|
 /// Internal reconstruction used by the validated binary decoder.
-pub fn from_parts(
+fn from_parts(
   length : Int,
   maximum : UInt64?,
   low_width : Int,
