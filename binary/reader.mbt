@@ -29,6 +29,17 @@ pub fn Reader::remaining(self : Reader) -> Int {
 }
 
 ///|
+/// Advance by a validated raw byte count.
+pub fn Reader::skip(
+  self : Reader,
+  count : Int,
+  context? : String = "bytes",
+) -> Unit raise @support.SuccinctError {
+  self.require(count, context)
+  self.cursor += count
+}
+
+///|
 fn Reader::require(
   self : Reader,
   count : Int,
