@@ -13,12 +13,7 @@ fn BitVector::check_prefix_position(
 }
 
 ///|
-/// Number of one bits in the half-open prefix [0, position).
-pub fn BitVector::rank1(
-  self : BitVector,
-  position : Int,
-) -> Int raise @support.SuccinctError {
-  self.check_prefix_position(position)
+fn BitVector::rank1_valid(self : BitVector, position : Int) -> Int {
   if position == 0 {
     return 0
   }
@@ -30,6 +25,16 @@ pub fn BitVector::rank1(
   let super_index = word_index / words_per_superblock
   let base = self.superblocks[super_index] + self.blocks[word_index]
   base + popcount_word(self.words[word_index] & low_mask(bit_offset))
+}
+
+///|
+/// Number of one bits in the half-open prefix [0, position).
+pub fn BitVector::rank1(
+  self : BitVector,
+  position : Int,
+) -> Int raise @support.SuccinctError {
+  self.check_prefix_position(position)
+  self.rank1_valid(position)
 }
 
 ///|
