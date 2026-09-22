@@ -152,9 +152,6 @@ pub fn Reader::read_varint(
     if shift == 63 && payload > 1UL {
       raise @support.SuccinctError::NumericOverflow(context~)
     }
-    if shift > 63 && payload != 0UL {
-      raise @support.SuccinctError::NumericOverflow(context~)
-    }
     value = value | (payload << shift)
     if (byte.to_int() & 0x80) == 0 {
       if self.cursor - start != varint_length(value) {
@@ -198,11 +195,6 @@ pub fn Reader::read_term(
   }
   let count = value.to_int()
   self.limits.check_term(count)
-  if count > 2147483647 - self.term_bytes {
-    raise @support.SuccinctError::NumericOverflow(
-      context="cumulative term bytes",
-    )
-  }
   let next_total = self.term_bytes + count
   self.limits.check_total_terms(next_total)
   let result = self.read_bytes(count, context~)

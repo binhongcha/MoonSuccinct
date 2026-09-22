@@ -64,3 +64,32 @@ test "reader enforces cumulative term bytes without consuming rejected data" {
   }
   assert_eq(reader.position(), 5)
 }
+
+///|
+test "reader rejects negative raw lengths and overflowing unsigned varints" {
+  let reader = Reader::new(b"")
+  ignore(reader.read_bytes(-1)) catch {
+    @support.SuccinctError::InvalidArgument(..) => ()
+    _ => fail("expected negative read count rejection")
+  }
+  let overflow = Reader::new(b"\xff\xff\xff\xff\xff\xff\xff\xff\xff\x02")
+  ignore(overflow.read_varint()) catch {
+    @support.SuccinctError::NumericOverflow(..) => ()
+    _ => fail("expected UInt64 varint overflow")
+  }
+}
+
+///|
+test "count and term lengths must fit the MoonBit Int domain" {
+  let encoded = b"\x80\x80\x80\x80\x08"
+  let count = Reader::new(encoded)
+  ignore(count.read_count("count")) catch {
+    @support.SuccinctError::NumericOverflow(..) => ()
+    _ => fail("expected count overflow")
+  }
+  let term = Reader::new(encoded)
+  ignore(term.read_term("term")) catch {
+    @support.SuccinctError::NumericOverflow(..) => ()
+    _ => fail("expected term length overflow")
+  }
+}
