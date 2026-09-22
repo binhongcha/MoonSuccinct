@@ -18,7 +18,7 @@ runtime warm-up.
 | LOUDS | parent/degree/child | rank/select cost | small result arrays only where documented |
 | byte trie | exact lookup | `O(length * log sibling_degree)` | none |
 | front coding | indexed term | `O(block_size + term bytes)` | decoded term |
-| front coding | lower bound | `O(log n * block decode)` | decoded terms |
+| front coding | lower bound | `O(log blocks * restart term + one block decode)` | one decoded block |
 | front coding | build sort/deduplicate | `O(n log n)` comparisons | copied input and result |
 
 ## Space reports

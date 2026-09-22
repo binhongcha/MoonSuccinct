@@ -48,6 +48,40 @@ fn Dictionary::decode_in_block(
 }
 
 ///|
+/// Decode one complete restart block once, preserving its canonical order.
+fn Dictionary::decode_block_terms(
+  self : Dictionary,
+  block : Int,
+) -> Array[Bytes] raise @support.SuccinctError {
+  let reader = @binary.Reader::new(self.encoded)
+  reader.skip(self.block_offsets[block], context="front-coded block offset")
+  let block_start = block * self.block_size
+  let remaining = self.terms - block_start
+  let block_length = if self.block_size < remaining {
+    self.block_size
+  } else {
+    remaining
+  }
+  let output : Array[Bytes] = []
+  let mut term = reader.read_term("front-coded restart term")
+  output.push(term)
+  for offset = 1; offset < block_length; offset = offset + 1 {
+    let prefix64 = reader.read_varint(context="front-coded prefix length")
+    if prefix64 > term.length().to_uint64() {
+      raise @support.SuccinctError::InvalidEncoding(
+        offset=reader.position(),
+        context="front-coded term",
+        detail="prefix exceeds previous term",
+      )
+    }
+    let suffix = reader.read_term("front-coded suffix")
+    term = @support.join_prefix_suffix(term, prefix64.to_int(), suffix)
+    output.push(term)
+  }
+  output
+}
+
+///|
 /// Optional random access by lexicographic term number.
 pub fn Dictionary::get(
   self : Dictionary,
@@ -83,17 +117,32 @@ pub fn Dictionary::lower_bound(
   self : Dictionary,
   target : Bytes,
 ) -> Int raise @support.SuccinctError {
+  if self.terms == 0 {
+    return 0
+  }
+  // Find the final restart term that is <= target. If target precedes the
+  // first restart, block zero still contains the insertion point.
   let mut low = 0
-  let mut high = self.terms
+  let mut high = self.block_offsets.length()
   while low < high {
     let middle = low + (high - low) / 2
-    if @support.compare_bytes(self.at(middle), target) < 0 {
+    let restart_index = middle * self.block_size
+    let restart = self.decode_in_block(middle, restart_index)
+    if @support.compare_bytes(restart, target) <= 0 {
       low = middle + 1
     } else {
       high = middle
     }
   }
-  low
+  let block = if low == 0 { 0 } else { low - 1 }
+  let block_start = block * self.block_size
+  let terms = self.decode_block_terms(block)
+  for offset = 0; offset < terms.length(); offset = offset + 1 {
+    if @support.compare_bytes(terms[offset], target) >= 0 {
+      return block_start + offset
+    }
+  }
+  block_start + terms.length()
 }
 
 ///|
