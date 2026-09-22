@@ -56,3 +56,28 @@ test "packed integer snapshots own their input words" {
   output[0] = 0UL
   assert_eq(packed.at(0), 1UL)
 }
+
+///|
+test "packed integer metadata and ranges are checked" {
+  let packed = from_values([1UL, 2UL, 3UL], 2)
+  assert_eq(packed.word_count(), 1)
+  assert_eq(packed.get(-1), None)
+  assert_eq(packed.get(3), None)
+  ignore(packed.at(3)) catch {
+    @support.SuccinctError::OutOfRange(..) => ()
+    _ => fail("expected packed integer range error")
+  }
+  ignore(from_words([], -1, 1)) catch {
+    @support.SuccinctError::InvalidArgument(..) => ()
+    _ => fail("expected negative packed length rejection")
+  }
+  ignore(from_words([], 1, 1)) catch {
+    @support.SuccinctError::InvalidArgument(..) => ()
+    _ => fail("expected packed word count rejection")
+  }
+  ignore(from_words([], 40000000, 64)) catch {
+    @support.SuccinctError::ResourceLimit(limit~, ..) =>
+      assert_eq(limit, "packed_bits")
+    _ => fail("expected packed bit resource limit")
+  }
+}

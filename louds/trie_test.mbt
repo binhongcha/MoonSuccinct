@@ -17,6 +17,13 @@ test "LOUDS trie deduplicates and serves binary exact lookups" {
   assert_false(trie.contains(b"te"))
   assert_false(trie.contains(b"toast"))
   assert_true(trie.find_node(b"te") is Some(_))
+  assert_eq(trie.term_number(b"te"), None)
+  assert_eq(trie.term_number(b"toast"), None)
+  assert_true(trie.is_terminal(0))
+  ignore(trie.is_terminal(trie.node_count())) catch {
+    @support.SuccinctError::OutOfRange(..) => ()
+    _ => fail("expected terminal node range error")
+  }
 }
 
 ///|
@@ -40,4 +47,8 @@ test "LOUDS trie prefix enumeration is ordered and bounded" {
   assert_eq(trie.terms_with_prefix(b"te", 2), [b"tea", b"team"])
   assert_eq(trie.terms_with_prefix(b"missing", 10), [])
   assert_eq(trie.terms_with_prefix(b"", 0), [])
+  ignore(trie.terms_with_prefix(b"", -1)) catch {
+    @support.SuccinctError::InvalidArgument(..) => ()
+    _ => fail("expected negative prefix limit rejection")
+  }
 }

@@ -39,6 +39,11 @@ test "Elias-Fano access is checked" {
   assert_eq(encoded.get(0), Some(2UL))
   assert_eq(encoded.get(2), Some(9UL))
   assert_eq(encoded.get(3), None)
+  assert_eq(encoded.at(0), 2UL)
+  assert_eq(encoded.low_width(), 1)
+  assert_eq(encoded.high_bit_length(), 7)
+  assert_eq(encoded.low_words().length(), 1)
+  assert_eq(encoded.high_words().length(), 1)
   ignore(encoded.at(3)) catch {
     @support.SuccinctError::OutOfRange(..) => ()
     _ => fail("expected range error")

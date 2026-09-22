@@ -61,6 +61,7 @@ test "predecessor and successor define inclusive and strict variants" {
   assert_eq(encoded.successor(4UL), Some(4UL))
   assert_eq(encoded.successor(10UL), None)
   assert_eq(encoded.strict_predecessor(4UL), Some(2UL))
+  assert_eq(encoded.strict_predecessor(2UL), None)
   assert_eq(encoded.strict_successor(4UL), Some(9UL))
 }
 

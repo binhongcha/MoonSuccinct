@@ -55,4 +55,16 @@ test "next and previous use inclusive and exclusive positions" {
   assert_eq(vector.previous1(5), Some(4))
   assert_eq(vector.next0(2), Some(2))
   assert_eq(vector.previous0(4), Some(3))
+  ignore(vector.next0(6)) catch {
+    @support.SuccinctError::OutOfRange(..) => ()
+    _ => fail("expected next position range error")
+  }
+  ignore(vector.previous1(-1)) catch {
+    @support.SuccinctError::OutOfRange(..) => ()
+    _ => fail("expected previous one range error")
+  }
+  ignore(vector.previous0(6)) catch {
+    @support.SuccinctError::OutOfRange(..) => ()
+    _ => fail("expected previous zero range error")
+  }
 }

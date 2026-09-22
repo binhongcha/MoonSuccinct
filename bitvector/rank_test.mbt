@@ -64,4 +64,8 @@ test "rank rejects positions and ranges outside the logical vector" {
     @support.SuccinctError::InvalidArgument(..) => ()
     _ => fail("expected invalid range")
   }
+  ignore(vector.rank0_range(-1, 1)) catch {
+    @support.SuccinctError::InvalidArgument(..) => ()
+    _ => fail("expected invalid zero range")
+  }
 }
