@@ -8,6 +8,8 @@ MoonSuccinct 是一个原创、纯 MoonBit 的静态紧凑索引基础库，提�
 当前仓库只在本地开发；尚未推送 GitHub，也尚未发布到 mooncakes.io。这两项
 操作严格等待仓库所有者的后续明确指令。
 
+十月新增 Elias–Fano 游标跳跃查找与偏斜倒排表交集，适用条件、复杂度及测试见 [October features](docs/OCTOBER_FEATURES.md)。
+
 ## 生态价值与边界
 
 MoonSuccinct 解决的是“底层可复用静态索引部件”问题：调用方不必引入完整搜索

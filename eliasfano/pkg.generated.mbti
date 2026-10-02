@@ -19,6 +19,8 @@ pub fn from_values(Array[UInt64]) -> EliasFano raise @support.SuccinctError
 
 pub fn intersect_distinct(EliasFano, EliasFano) -> EliasFano raise @support.SuccinctError
 
+pub fn intersect_distinct_skewed(EliasFano, EliasFano) -> EliasFano raise @support.SuccinctError
+
 pub fn union_distinct(EliasFano, EliasFano) -> EliasFano raise @support.SuccinctError
 
 // Errors
@@ -44,6 +46,7 @@ pub fn EliasFano::length(Self) -> Int
 pub fn EliasFano::low_width(Self) -> Int
 pub fn EliasFano::low_words(Self) -> Array[UInt64]
 pub fn EliasFano::lower_bound(Self, UInt64) -> Int
+pub fn EliasFano::lower_bound_from(Self, Int, UInt64) -> Int raise @support.SuccinctError
 pub fn EliasFano::maximum(Self) -> UInt64?
 pub fn EliasFano::minimum(Self) -> UInt64?
 pub fn EliasFano::predecessor(Self, UInt64) -> UInt64?

@@ -10,6 +10,8 @@ The project is developed locally. No GitHub repository has been pushed and no
 Mooncakes package has been published; both actions are intentionally reserved
 for explicit owner approval.
 
+October additions: cursor-based Elias–Fano seeking and skewed posting-list intersection; see [scope and complexity](docs/OCTOBER_FEATURES.md).
+
 ## Why this project
 
 Many applications need fast queries over read-mostly identifiers, bitmaps,
