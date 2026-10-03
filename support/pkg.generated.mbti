@@ -1,5 +1,5 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "oyjh0381/moonsuccinct/support"
+package "binhongcha/moonsuccinct/support"
 
 import {
   "moonbitlang/core/debug",

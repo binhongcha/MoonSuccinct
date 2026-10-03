@@ -3,7 +3,7 @@
 All notable changes will be recorded here. The project follows semantic
 versioning after its first public release.
 
-## 0.1.0 - unreleased
+## 0.1.0 - 2026-10-03
 
 - Add immutable packed rank/select bit vectors with sparse navigation.
 - Add Elias–Fano monotone sequences, streaming validation, range queries, and
@@ -17,8 +17,8 @@ versioning after its first public release.
 - Use O(n log n) dictionary sorting and direct restart-block lower-bound search.
 - Add toolchain coverage analysis and explicit public boundary-contract tests.
 
-Publication is intentionally deferred until the repository owner authorizes
-GitHub push and Mooncakes release.
+Initial public release under `binhongcha/moonsuccinct`. Structures are static;
+updates require rebuilding. Byte-prefix lengths are not Unicode character counts.
 
 ## 2026-10-03 — October maintenance additions
 

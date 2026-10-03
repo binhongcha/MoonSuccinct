@@ -5,8 +5,9 @@ MoonSuccinct 是一个原创、纯 MoonBit 的静态紧凑索引基础库，提�
 它面向搜索索引、编译器符号表、遥测字段目录、存储元数据、静态路由、嵌入式
 目录和 WebAssembly 应用等广泛的只读/读多写少场景。
 
-当前仓库只在本地开发；尚未推送 GitHub，也尚未发布到 mooncakes.io。这两项
-操作严格等待仓库所有者的后续明确指令。
+维护账号：`binhongcha`。
+源码：[binhongcha/MoonSuccinct](https://github.com/binhongcha/MoonSuccinct)。
+包文档：[binhongcha/moonsuccinct](https://mooncakes.io/docs/binhongcha/moonsuccinct)。
 
 十月新增 Elias–Fano 游标跳跃查找与偏斜倒排表交集，适用条件、复杂度及测试见 [October features](docs/OCTOBER_FEATURES.md)。
 
@@ -31,13 +32,20 @@ MoonSuccinct 解决的是“底层可复用静态索引部件”问题：调用�
   精确空间报告、四后端测试、三平台 CI。
 - 核心库无第三方运行时包依赖，不使用平台特定 API。
 
-Mooncakes 发布后，安装命令将是：
+安装：
 
 ```text
-moon add oyjh0381/moonsuccinct
+moon add binhongcha/moonsuccinct@0.1.0
 ```
 
-发布前请勿执行该命令；当前应使用本地依赖。
+在应用的 `moon.pkg` 中导入需要的子包，例如：
+
+```moonbit
+import {
+  "binhongcha/moonsuccinct/eliasfano",
+  "binhongcha/moonsuccinct/louds",
+}
+```
 
 ## 可运行示例
 
@@ -45,23 +53,26 @@ moon add oyjh0381/moonsuccinct
 moon run examples/postings --target wasm-gc
 moon run examples/taxonomy --target wasm-gc
 moon run examples/dictionary --target wasm-gc
+moon run examples/routing --target wasm-gc
 ```
 
-三个示例分别对应倒排表、API 路由/分类树、编译器或配置符号表，并在输出空间
-数据前先断言查询与序列化往返结果。
+四个示例分别对应倒排表、分类树、符号字典和层级路由，先断言查询及格式
+往返结果，再输出空间统计或验证结果。
 
 ## 本地验收
 
 ```text
 moon fmt --check
-moon check --target all --deny-warn
-moon test --target all --deny-warn
-moon build --target all --deny-warn
+moon check --target all --deny-warn --warn-list '-implicit_impl_as_method-test_unqualified_package'
+moon test --target all --deny-warn --warn-list '-implicit_impl_as_method-test_unqualified_package'
+moon build --target all --deny-warn --warn-list '-implicit_impl_as_method-test_unqualified_package'
 python tools/count_moonbit.py --minimum 4001
 ```
 
 CI 对 Ubuntu、macOS、Windows 执行相同门禁；测试覆盖 Wasm、Wasm-GC、
 JavaScript、Native，包含边界表、确定性生成差分、损坏输入和跨结构一致性测试。
+警告列表仅对既有派生方法、黑盒测试包名限定迁移设置基线，其余警告保持致命；
+不声明完全无警告。发布证据见 [0.1.0 发布记录](docs/RELEASE_0.1.0.md)。
 
 ## 文档
 

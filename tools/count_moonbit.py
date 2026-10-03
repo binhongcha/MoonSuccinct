@@ -10,7 +10,7 @@ def source_files(root: Path) -> list[Path]:
     return sorted(
         path
         for path in root.rglob("*.mbt")
-        if "_build" not in path.parts and ".git" not in path.parts
+        if not any(part in {"_build", "target", ".git", ".mooncakes"} for part in path.parts)
     )
 
 

@@ -1,6 +1,6 @@
 import {
-  "oyjh0381/moonsuccinct/bitvector",
-  "oyjh0381/moonsuccinct/eliasfano",
-  "oyjh0381/moonsuccinct/frontcoded",
-  "oyjh0381/moonsuccinct/louds",
+  "binhongcha/moonsuccinct/bitvector",
+  "binhongcha/moonsuccinct/eliasfano",
+  "binhongcha/moonsuccinct/frontcoded",
+  "binhongcha/moonsuccinct/louds",
 }

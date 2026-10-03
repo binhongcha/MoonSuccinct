@@ -1,8 +1,8 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "oyjh0381/moonsuccinct/binary"
+package "binhongcha/moonsuccinct/binary"
 
 import {
-  "oyjh0381/moonsuccinct/support",
+  "binhongcha/moonsuccinct/support",
 }
 
 // Values

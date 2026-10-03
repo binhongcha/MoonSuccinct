@@ -9,13 +9,13 @@
 //   "moonbitlang/x@0.4.6",
 // }
 
-name = "oyjh0381/moonsuccinct"
+name = "binhongcha/moonsuccinct"
 
 version = "0.1.0"
 
 readme = "README.mbt.md"
 
-repository = "https://github.com/oyjh0381/MoonSuccinct"
+repository = "https://github.com/binhongcha/MoonSuccinct"
 
 license = "Apache-2.0"
 

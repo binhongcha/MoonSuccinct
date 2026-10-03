@@ -1,11 +1,11 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "oyjh0381/moonsuccinct/eliasfano"
+package "binhongcha/moonsuccinct/eliasfano"
 
 import {
+  "binhongcha/moonsuccinct/bitvector",
+  "binhongcha/moonsuccinct/packed",
+  "binhongcha/moonsuccinct/support",
   "moonbitlang/core/debug",
-  "oyjh0381/moonsuccinct/bitvector",
-  "oyjh0381/moonsuccinct/packed",
-  "oyjh0381/moonsuccinct/support",
 }
 
 // Values

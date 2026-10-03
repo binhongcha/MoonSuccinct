@@ -1,10 +1,10 @@
 import {
-  "oyjh0381/moonsuccinct" @lib,
-  "oyjh0381/moonsuccinct/bitvector",
-  "oyjh0381/moonsuccinct/conformance",
-  "oyjh0381/moonsuccinct/eliasfano",
-  "oyjh0381/moonsuccinct/frontcoded",
-  "oyjh0381/moonsuccinct/louds",
+  "binhongcha/moonsuccinct" @lib,
+  "binhongcha/moonsuccinct/bitvector",
+  "binhongcha/moonsuccinct/conformance",
+  "binhongcha/moonsuccinct/eliasfano",
+  "binhongcha/moonsuccinct/frontcoded",
+  "binhongcha/moonsuccinct/louds",
 }
 
 pkgtype(kind: "executable")

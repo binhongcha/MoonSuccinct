@@ -1,10 +1,10 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "oyjh0381/moonsuccinct/louds"
+package "binhongcha/moonsuccinct/louds"
 
 import {
+  "binhongcha/moonsuccinct/bitvector",
+  "binhongcha/moonsuccinct/support",
   "moonbitlang/core/debug",
-  "oyjh0381/moonsuccinct/bitvector",
-  "oyjh0381/moonsuccinct/support",
 }
 
 // Values

@@ -1,5 +1,5 @@
 import {
-  "oyjh0381/moonsuccinct/louds",
+  "binhongcha/moonsuccinct/louds",
 }
 
 pkgtype(kind: "executable")

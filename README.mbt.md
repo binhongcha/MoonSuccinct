@@ -6,9 +6,9 @@ and byte tries, and block front-coded dictionaries. It targets reusable index
 layers in search, compilers, telemetry, storage metadata, static routing,
 embedded catalogs, and WebAssembly applications.
 
-The project is developed locally. No GitHub repository has been pushed and no
-Mooncakes package has been published; both actions are intentionally reserved
-for explicit owner approval.
+Maintainer: `binhongcha`.
+Source: [binhongcha/MoonSuccinct](https://github.com/binhongcha/MoonSuccinct).
+Package: [binhongcha/moonsuccinct](https://mooncakes.io/docs/binhongcha/moonsuccinct).
 
 October additions: cursor-based Elias–Fano seeking and skewed posting-list intersection; see [scope and complexity](docs/OCTOBER_FEATURES.md).
 
@@ -54,17 +54,24 @@ The detailed ecosystem collision analysis is in
 | `support` | Errors, limits, byte helpers, and space reports |
 | `conformance` | Cross-structure embeddable smoke check and test suite |
 
-## Local use
+## Install and use
 
-Clone or place this repository beside your application and reference it as a
-local MoonBit dependency while publication is pending. After an authorized
-Mooncakes release, the normal command will be:
+Install the published package:
 
 ```text
-moon add oyjh0381/moonsuccinct
+moon add binhongcha/moonsuccinct@0.1.0
 ```
 
-Do not run that command before the package exists on Mooncakes.
+Import the required subpackages in your application's `moon.pkg`:
+
+```moonbit nocheck
+///|
+import {
+  "binhongcha/moonsuccinct/eliasfano",
+  "binhongcha/moonsuccinct/louds",
+  "binhongcha/moonsuccinct/frontcoded",
+}
+```
 
 ### Monotone posting list
 
@@ -113,25 +120,30 @@ applications should propagate it or match its stable variants/codes.
 moon run examples/postings --target wasm-gc
 moon run examples/taxonomy --target wasm-gc
 moon run examples/dictionary --target wasm-gc
+moon run examples/routing --target wasm-gc
 ```
 
 The examples assert query and codec results before printing auditable space
 figures. They represent an inverted list, an API route/taxonomy index, and a
-compiler/configuration symbol dictionary.
+compiler/configuration symbol dictionary. The routing example checks lexical
+term selection and application-defined hierarchical byte-prefix matching.
 
 ## Quality gates
 
 ```text
 moon fmt --check
-moon check --target all --deny-warn
-moon test --target all --deny-warn
-moon build --target all --deny-warn
+moon check --target all --deny-warn --warn-list '-implicit_impl_as_method-test_unqualified_package'
+moon test --target all --deny-warn --warn-list '-implicit_impl_as_method-test_unqualified_package'
+moon build --target all --deny-warn --warn-list '-implicit_impl_as_method-test_unqualified_package'
 python tools/count_moonbit.py --minimum 4001
 ```
 
 CI runs the gates and all examples on Ubuntu, macOS, and Windows. The test suite
 uses boundary tables, generated differential checks, codec corruption cases,
 and cross-structure conformance checks on Wasm, Wasm-GC, JavaScript, and Native.
+The scoped compiler migration baseline covers existing derived-method and
+unqualified blackbox-test warnings; all other warnings remain fatal. This is
+not a warning-free claim. See [release evidence](docs/RELEASE_0.1.0.md).
 
 ## Complexity and trade-offs
 
