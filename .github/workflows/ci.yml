@@ -37,6 +37,7 @@ jobs:
           moon run examples/postings --target wasm-gc
           moon run examples/taxonomy --target wasm-gc
           moon run examples/dictionary --target wasm-gc
+          moon run examples/routing --target wasm-gc
       - name: Effective MoonBit source floor
         run: python tools/count_moonbit.py --minimum 4001
 

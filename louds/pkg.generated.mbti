@@ -53,10 +53,13 @@ pub struct Trie {
 pub fn Trie::contains(Self, Bytes) -> Bool
 pub fn Trie::find_node(Self, Bytes) -> Int?
 pub fn Trie::is_terminal(Self, Int) -> Bool raise @support.SuccinctError
+pub fn Trie::longest_prefix_length(Self, Bytes) -> Int?
 pub fn Trie::node_count(Self) -> Int
+pub fn Trie::prefix_lengths(Self, Bytes, max_matches? : Int) -> Array[Int] raise @support.SuccinctError
 pub fn Trie::prefix_range(Self, Bytes) -> TermRange
 pub fn Trie::space_report(Self) -> @support.SpaceReport raise @support.SuccinctError
 pub fn Trie::statistics(Self) -> TrieStatistics
+pub fn Trie::term_at(Self, Int) -> Bytes?
 pub fn Trie::term_count(Self) -> Int
 pub fn Trie::term_number(Self, Bytes) -> Int?
 pub fn Trie::terms_with_prefix(Self, Bytes, Int) -> Array[Bytes] raise @support.SuccinctError

@@ -132,16 +132,28 @@ fn Trie::collect(
   if self.terminals.get(node).unwrap() {
     output.push(Bytes::from_array(path.copy()))
   }
-  for child in self.topology.children_valid(node) {
-    if output.length() >= limit {
-      return
+  // One mutable path and explicit DFS frames avoid recursion and copying the
+  // entire prefix at each edge. Only completed output terms are copied.
+  let frames : Array[(Array[Int], Int)] = [
+    (self.topology.children_valid(node), 0),
+  ]
+  while !frames.is_empty() && output.length() < limit {
+    let top = frames.length() - 1
+    let (children, next) = frames[top]
+    if next == children.length() {
+      ignore(frames.pop())
+      if !frames.is_empty() {
+        ignore(path.pop())
+      }
+    } else {
+      let child = children[next]
+      frames[top] = (children, next + 1)
+      path.push(self.edge_labels[child - 1])
+      if self.terminals.get(child).unwrap() {
+        output.push(Bytes::from_array(path.copy()))
+      }
+      frames.push((self.topology.children_valid(child), 0))
     }
-    self.collect(
-      child,
-      copy_path_with(path, self.edge_labels[child - 1]),
-      limit,
-      output,
-    )
   }
 }
 
