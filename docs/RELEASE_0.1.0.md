@@ -18,7 +18,13 @@
 - `cmd/main` 自检、postings/taxonomy/dictionary/routing 四个 Wasm-GC 示例执行通过。
 - 格式检查、公开接口生成、包文档生成与 `python tools/count_moonbit.py --minimum 4001` 通过。
 - 与 CI 一致的定向编译器迁移警告基线为 `-implicit_impl_as_method-test_unqualified_package`；其余警告保持致命，不宣称完全无警告。
-- 公开仓库 CI、Mooncakes 发布、独立消费者安装与 GitHub Release 结果将在本次发布完成后补录，链接本身不是成功证据。
+- 发布源码：`9b2a8dd72f6f1453a49b196d372205efef283367`。
+- 发布源 CI：[37114206550](https://github.com/binhongcha/MoonSuccinct/actions/runs/37114206550)，Ubuntu/macOS/Windows 与公开接口/文档作业全部成功。
+- Mooncakes 发布：打包与解包检查通过，服务端 `200 OK`；[公开包文档](https://mooncakes.io/docs/binhongcha/moonsuccinct) HTTP 200。
+- 发布 ZIP SHA-256：`f996adb9a2d92eaf8cd3f2fc01ce76f7e250af23f2dcd38eafb69e4715e925f9`；136 个条目，无私有 Git、构建/依赖缓存或本地备份目录，申报存档无邮箱/手机号匹配。
+- 独立消费者通过 `moon add binhongcha/moonsuccinct@0.1.0` 从公共注册表下载，无本地路径依赖；检查与 Wasm-GC 运行通过，验证版本、rank/select、Elias–Fano 游标/交集、编码往返、Trie 词项/前缀与前缀压缩字典查询，并拒绝损坏输入。
+- GitHub Release：[v0.1.0](https://github.com/binhongcha/MoonSuccinct/releases/tag/v0.1.0)，非草稿；发布者与 annotated tag 的 tagger 均为 `binhongcha`，标签精确指向发布源码。
+- 发布后的 main 仅补录三份文档，不覆盖或重发 0.1.0；最新 CI 见 [Actions](https://github.com/binhongcha/MoonSuccinct/actions)。
 
 ## 功能与申报边界
 
