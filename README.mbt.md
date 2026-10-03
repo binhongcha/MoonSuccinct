@@ -168,3 +168,9 @@ derived indexes and default to bounded input/item/term budgets. See
 
 Apache License 2.0. See [`LICENSE`](LICENSE). This repository contains no
 unauthorized private, closed-source, commercial, or source-unknown code.
+
+## 十月第二轮：Trie 词项反查与前缀匹配
+
+`Trie::term_at(index)` 根据词项序号跳过子树并反查词项，越界返回 `None`。`longest_prefix_length(key)` 返回最长已存前缀的字节数，`prefix_lengths(key, max_matches?)` 返回全部已存前缀长度，最短在前并限制结果数。空词项匹配为 `Some(0)`，不是无匹配；任意二进制词项均可使用，应用自行定义路径分隔符边界。
+
+前缀枚举改为显式 DFS 栈与单一路径，避免深词项递归和逐层路径复制；只复制返回词项。运行 `moon run examples/routing --target wasm-gc`。详见 [本轮审查与复杂度](docs/SECOND_REVIEW.md) 和 [十月申报资料稿](十月项目申报书.md)。

@@ -19,3 +19,8 @@ versioning after its first public release.
 
 Publication is intentionally deferred until the repository owner authorizes
 GitHub push and Mooncakes release.
+
+## 2026-10-03 — October maintenance additions
+
+- Add trie term selection and stored-prefix matching; enumerate deep terms iteratively.
+- Add regression tests, executable integration examples, source archives and October proposal fact drafts.
