@@ -16,8 +16,8 @@ MoonSuccinct 是一个原创、纯 MoonBit 的静态紧凑索引基础库，提�
 MoonSuccinct 解决的是“底层可复用静态索引部件”问题：调用方不必引入完整搜索
 引擎或数据库，也能获得紧凑表示、可预测查询、稳定格式、资源受限解码和统一
 错误语义。项目不实现通用 BitSet、Roaring Bitmap、wavelet/FM-index、模糊匹配、
-全文检索、数据库或网络服务，因此与相邻项目保持清晰边界。完整检索对比见
-[`docs/ECOSYSTEM_RESEARCH.md`](docs/ECOSYSTEM_RESEARCH.md)。
+全文检索、数据库或网络服务；结构表示、输入限制和业务边界见
+[功能规格](docs/SPEC.md)。
 
 ## 核心能力
 
@@ -97,4 +97,4 @@ Apache License 2.0。见 [`LICENSE`](LICENSE)。项目不包含未经授权的�
 
 `Trie::term_at(index)` 根据词项序号跳过子树并反查词项，越界返回 `None`。`longest_prefix_length(key)` 返回最长已存前缀的字节数，`prefix_lengths(key, max_matches?)` 返回全部已存前缀长度，最短在前并限制结果数。空词项匹配为 `Some(0)`，不是无匹配；任意二进制词项均可使用，应用自行定义路径分隔符边界。
 
-前缀枚举改为显式 DFS 栈与单一路径，避免深词项递归和逐层路径复制；只复制返回词项。运行 `moon run examples/routing --target wasm-gc`。详见 [本轮审查与复杂度](docs/SECOND_REVIEW.md) 和 [十月申报资料稿](十月项目申报书.md)。
+前缀枚举改为显式 DFS 栈与单一路径，避免深词项递归和逐层路径复制；只复制返回词项。运行 `moon run examples/routing --target wasm-gc`。详见 [功能与边界](docs/OCTOBER_FEATURES.md)。

@@ -18,7 +18,7 @@
 - `cmd/main` 自检、postings/taxonomy/dictionary/routing 四个 Wasm-GC 示例执行通过。
 - 格式检查、公开接口生成、包文档生成与 `python tools/count_moonbit.py --minimum 4001` 通过。
 - 与 CI 一致的定向编译器迁移警告基线为 `-implicit_impl_as_method-test_unqualified_package`；其余警告保持致命，不宣称完全无警告。
-- 发布源码：`9b2a8dd72f6f1453a49b196d372205efef283367`。
+- 发布源码：`dcb1ad553d813d430436bd92d06fc0978bed8cd3`。
 - 发布源 CI：[37114206550](https://github.com/binhongcha/MoonSuccinct/actions/runs/37114206550)，Ubuntu/macOS/Windows 与公开接口/文档作业全部成功。
 - Mooncakes 发布：打包与解包检查通过，服务端 `200 OK`；[公开包文档](https://mooncakes.io/docs/binhongcha/moonsuccinct) HTTP 200。
 - 发布 ZIP SHA-256：`f996adb9a2d92eaf8cd3f2fc01ce76f7e250af23f2dcd38eafb69e4715e925f9`；136 个条目，无私有 Git、构建/依赖缓存或本地备份目录，申报存档无邮箱/手机号匹配。
